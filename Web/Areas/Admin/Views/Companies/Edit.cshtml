@@ -1,0 +1,92 @@
+﻿
+@using Web.Helpers
+@model Web.Models.Access.Company
+
+@Html.Partial("_BreadCumb", "Editing Companies"); 
+
+@using (Html.BeginForm("Edit", "Companies", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-materials" }))
+{
+    @Html.AntiForgeryToken()
+	<article class="container container-principal">
+		<div class="row">
+			<div class="container-table">
+				<div class="pull-left">
+					<h3>Register of Companies</h3>
+				</div>
+				<div class="clearfix"></div>
+				<div class="table">
+					<div class="form-horizontal">
+						@Html.CustomValidationSummary()
+						@Html.HiddenFor(model => model.CompanyId)
+						<div class="form-group">
+							<div class="group">
+								@Html.TextBoxFor(model => model.Name, new { type = "text", required = "required" })
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+									@Html.LabelFor(model => model.Name)
+										
+								</label>
+								@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="group">
+								@Html.TextBoxFor(model => model.Email, new { type = "text", required = "required" })
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+									@Html.LabelFor(model => model.Email)
+										
+								</label>
+								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="group">
+								@Html.TextBoxFor(model => model.Address, new { type = "text", required = "required" })
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+									@Html.LabelFor(model => model.Address)
+										
+								</label>
+								@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="group">
+								@Html.TextBoxFor(model => model.Phone, new { type = "text", required = "required" })
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+									@Html.LabelFor(model => model.Phone)
+										
+								</label>
+								@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="group">
+							<div class="checkbox">
+								@Html.TextBoxFor(model => model.Active, new { type = "text", required = "required" })
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+									@Html.LabelFor(model => model.Active)
+										
+								</label>
+								@Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</article>
+	@Html.Partial("_CreateEditFooter", "Companies")
+}
+
+
+

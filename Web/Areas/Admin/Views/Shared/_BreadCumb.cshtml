@@ -1,0 +1,26 @@
+﻿@*@using Solucao.Vergus.Library.Common*@
+@model dynamic
+@{
+    string modulo;
+    string tela;
+    //try
+    //{
+    //    modulo = Model.ModuloParsed();
+    //    tela = Model.Tela;
+    //}
+    //catch (Exception)
+    //{
+        modulo = "Cadastros Gerais";
+        tela = Model;
+    //}
+}
+<div class="heading-page">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li class="active">@modulo</li>
+            <li class="active">@tela</li>
+        </ol>
+        <h2>@tela</h2>
+    </div>
+</div>

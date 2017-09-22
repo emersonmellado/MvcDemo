@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Web.Models.Access.User>
+
+@Html.Partial("_BreadCumb", "Listing of User")
+
+<article class="container container-principal">
+	<div class="row">
+		<div class="container-table">
+			<div class="pull-left">
+				<h3>Listing of User</h3>
+			</div>
+			<div class="pull-right">
+				@Html.ActionLink("Add User", "Create", "Users", null, new {@class="btn btn-primary"})
+			</div>
+			<div class="clearfix"></div>
+			<table class="table">
+				<tr>
+					<th>
+						<i class="material-icons sort up">arrow_back</i>
+						@Html.DisplayNameFor(model => model.Name)			
+					</th>
+					<th>
+						<i class="material-icons sort up">arrow_back</i>
+						@Html.DisplayNameFor(model => model.Active)			
+					</th>
+					<th class="col-acao text-center">Action</th>
+				</tr>
+
+				@foreach (var item in Model) {
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Active)
+					</td>
+					<td class="text-center">
+						<button class="btn-acao" title="Click to view" data-toggle="modal" data-target="#modalResumo" data-id="@item.UserId">
+							<i class="material-icons">remove_red_eye</i>
+						</button>
+						<button type="button" class="btn-acao" title="Click to edit" onclick="location.href='@Url.Action("Edit", "Users", new { id=item.UserId })'" >
+							<span class="material-icons">mode_edit</span>
+						</button>
+						<button type="button" class="btn-acao" title="Click to delete" onclick="location.href='@Url.Action("Delete", "Users", new { id=item.UserId })'" >
+							<span class="material-icons">delete</span>
+						</button>
+					</td>
+				</tr>
+				}
+			</table>
+		</div>
+	</div>
+</article>
+
+<div class="modal fade modalResumo" id="modalResumo" tabindex="-1" role="dialog" aria-labelledby="modalResumo"></div>   
+
+

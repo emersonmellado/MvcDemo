@@ -1,0 +1,70 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@model <#= ViewDataTypeName #>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
+            <h4 class="modal-title" id="myModalLabel">Details of <#= entitySetName#></h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+				<article class="container container-principal">
+					<div class="row">
+						<div class="container-table">
+							<div class="clearfix"></div>
+							<table class="table">
+								<tr>
+<#
+foreach (PropertyMetadata property in ModelMetadata.Properties) {
+if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+// We do not want to show any association properties for which there is
+// no associated foreign key.
+if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+	continue;
+}
+#>
+									<th>
+										@Html.DisplayNameFor(model => model.<#= GetValueExpression(property) #>)
+									</th>
+<#
+}
+}
+#>
+								</tr>
+								<tr>
+<#
+foreach (PropertyMetadata property in ModelMetadata.Properties) {
+if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+// We do not want to show any association properties for which there is
+// no associated foreign key.
+if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+	continue;
+}
+#>
+									<td>
+										@Html.DisplayFor(model => model.<#= GetValueExpression(property) #>)
+									</td>
+<#
+}
+}
+#>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</article>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<#   ClearIndent(); #>
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

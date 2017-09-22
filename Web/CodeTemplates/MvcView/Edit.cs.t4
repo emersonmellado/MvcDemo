@@ -1,0 +1,126 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@using Web.Helpers
+@model <#= ViewDataTypeName #>
+<#
+// "form-control" attribute is only supported for all EditorFor() in System.Web.Mvc 5.1.0.0 or later versions, except for checkbox, which uses a div in Bootstrap
+string boolType = "System.Boolean";
+Version requiredMvcVersion = new Version("5.1.0.0");
+bool isControlHtmlAttributesSupported = MvcVersion >= requiredMvcVersion;
+// The following chained if-statement outputs the file header code and markup for a partial view, a view using a layout page, or a regular view.
+#>
+
+@Html.Partial("_BreadCumb", "Editing <#= entitySetName#>"); 
+
+@using (Html.BeginForm("Edit", "<#= entitySetName#>", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-materials" }))
+{
+    @Html.AntiForgeryToken()
+	<article class="container container-principal">
+		<div class="row">
+			<div class="container-table">
+				<div class="pull-left">
+					<h3>Register of <#= entitySetName#></h3>
+				</div>
+				<div class="clearfix"></div>
+				<div class="table">
+					<div class="form-horizontal">
+						@Html.CustomValidationSummary()
+<#
+foreach (PropertyMetadata property in ModelMetadata.Properties) {
+if (property.Scaffold && !property.IsAssociation) {
+if (property.IsPrimaryKey) {
+#>
+						@Html.HiddenFor(model => model.<#= property.PropertyName #>)
+<#
+} else if (!property.IsReadOnly) {
+#>
+						<div class="form-group">
+							<div class="group">
+<#
+bool isCheckbox = property.TypeName.Equals(boolType);
+if (property.IsForeignKey) {
+#>
+<# 
+if (isControlHtmlAttributesSupported) {
+#>
+								@Html.DropDownList("<#= property.PropertyName #>")
+<#
+} else {
+#>
+								@Html.DropDownList("<#= property.PropertyName #>", String.Empty)
+<#
+}
+#>
+<#
+} else  if (isControlHtmlAttributesSupported) {
+if (isCheckbox) {
+#>
+							<div class="checkbox">
+								@Html.TextBoxFor(model => model.<#= property.PropertyName #>, new { type = "text", required = "required" })
+<#
+} else if (property.IsEnum && !property.IsEnumFlags) {
+#>
+								@Html.EnumDropDownListFor(model => model.<#= property.PropertyName #>)
+<#
+} else {
+#>
+								@Html.TextBoxFor(model => model.<#= property.PropertyName #>, new { type = "text", required = "required" })
+<#
+}
+} else {
+#>
+								@Html.TextBoxFor(model => model.<#= property.PropertyName #>, new { type = "text", required = "required" })
+<#
+}
+#>
+								<span class="highlight"></span>
+								<span class="bar"></span>
+								<label class="label-animated">
+<#
+if (property.IsForeignKey) {
+#>
+									@Html.LabelFor(model => model.<#= property.PropertyName #>, "<#= GetAssociationName(property) #>")
+<#
+} else {
+#>
+									@Html.LabelFor(model => model.<#= property.PropertyName #>)
+<#
+}
+#>										
+								</label>
+<# 
+if (isControlHtmlAttributesSupported) {
+#>
+								@Html.ValidationMessageFor(model => model.<#= property.PropertyName #>, "", new { @class = "text-danger" })
+<#        
+} else {
+#>
+								@Html.ValidationMessageFor(model => model.<#= property.PropertyName #>)
+<#      
+}
+if (isCheckbox && isControlHtmlAttributesSupported) {
+#>
+							</div>
+<#
+}
+#>
+							</div>
+						</div>
+<#
+}
+}
+}
+#>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</article>
+	@Html.Partial("_CreateEditFooter", "<#= entitySetName#>")
+}
+
+
+<#  ClearIndent(); #>
+
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

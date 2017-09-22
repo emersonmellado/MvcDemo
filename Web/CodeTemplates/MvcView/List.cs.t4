@@ -1,0 +1,98 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+
+@model IEnumerable<#= "<" + ViewDataTypeName + ">" #>
+
+@Html.Partial("_BreadCumb", "Listing of <#= entitySetName #>")
+
+<article class="container container-principal">
+	<div class="row">
+		<div class="container-table">
+			<div class="pull-right">
+				@Html.ActionLink("Add <#= entitySetName#>", "Create", "<#= entitySetName#>", null, new {@class="btn btn-primary"})
+			</div>
+			<div class="clearfix"></div>
+			<table class="table">
+				<tr>
+<#
+IEnumerable<PropertyMetadata> properties = ModelMetadata.Properties;
+foreach (PropertyMetadata property in properties) {
+if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+// We do not want to show any association properties for which there is
+// no associated foreign key.
+if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+	continue;
+}
+#>
+					<th>
+						<i class="material-icons sort up">arrow_back</i>
+						@Html.DisplayNameFor(model => model.<#= GetValueExpression(property) #>)			
+					</th>
+<#
+}
+}
+#>
+					<th class="col-acao text-center">Action</th>
+				</tr>
+
+				@foreach (var item in Model) {
+				<tr>
+<#
+foreach (PropertyMetadata property in properties) {
+if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+// We do not want to show any association properties for which there is
+// no associated foreign key.
+if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+	continue;
+}
+#>
+					<td>
+						@Html.DisplayFor(modelItem => <#= "item." + GetValueExpression(property) #>)
+					</td>
+<#
+}
+}
+string pkName = GetPrimaryKeyName();
+if (pkName != null) {
+#>
+					<td class="text-center">
+						<button class="btn-acao" title="Click to view" data-toggle="modal" data-target="#modalResumo" data-id="@item.<#=pkName #>">
+							<i class="material-icons">remove_red_eye</i>
+						</button>
+						<button type="button" class="btn-acao" title="Click to edit" onclick="location.href='@Url.Action("Edit", "<#=entitySetName #>", new { id=item.<#=pkName #> })'" >
+							<span class="material-icons">mode_edit</span>
+						</button>
+						<button type="button" class="btn-acao" title="Click to delete" onclick="location.href='@Url.Action("Delete", "<#=entitySetName #>", new { id=item.<#=pkName #> })'" >
+							<span class="material-icons">delete</span>
+						</button>
+					</td>
+<#
+} else {
+#>
+					<td class="text-center">
+						<button class="btn-acao" title="Click to view" data-toggle="modal" data-target="#modalResumo" data-id="@item.PrimaryKey">
+							<i class="material-icons">remove_red_eye</i>
+						</button>
+						<button type="button" class="btn-acao" title="Click to edit" onclick="location.href='@Url.Action("Edit", "<#=entitySetName #>", new { /* id=item.PrimaryKey */ })'" >
+							<span class="material-icons">mode_edit</span>
+						</button>
+						<button type="button" class="btn-acao" title="Click to delete" onclick="location.href='@Url.Action("Delete", "<#=entitySetName #>", new { /* id=item.PrimaryKey */ })'" >
+							<span class="material-icons">delete</span>
+						</button>
+					</td>
+<#
+}
+#>
+				</tr>
+				}
+			</table>
+		</div>
+	</div>
+</article>
+
+<div class="modal fade modalResumo" id="modalResumo" tabindex="-1" role="dialog" aria-labelledby="modalResumo"></div>   
+
+<#  ClearIndent(); #>
+
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

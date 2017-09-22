@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@model <#= ViewDataTypeName #>
+
+@Html.Partial("_BreadCumb", "Register of <#= entitySetName#>"); 
+<article class="container container-principal">
+	<div class="row">
+		<div class="container-table">
+			<div class="pull-left">
+				<h3>Please confirm to complete the operation</h3>
+			</div>
+			<div class="clearfix"></div>
+			<table class="table">
+<#
+foreach (PropertyMetadata property in ModelMetadata.Properties) {
+if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+// We do not want to show any association properties for which there is
+// no associated foreign key.
+if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+continue;
+}
+#>
+				<tr>
+					<td>
+						@Html.DisplayNameFor(model => model.<#= GetValueExpression(property) #>)
+					</td>
+					<td>
+						@Html.DisplayFor(model => model.<#= GetValueExpression(property) #>)
+					</td>
+				</tr>
+<#
+}
+}
+#>
+			</table>
+		</div>
+	</div>
+	@using (Html.BeginForm()) 
+	{
+		@Html.AntiForgeryToken()
+		<div class="container">
+			<div class="form-actions no-color pull-right">        
+				@Html.ActionLink( "Cancel", "Index", "<#= entitySetName#>", null, new { @class = "btn btn-default" })
+				|
+				<input type="submit" value="Confirm and Delete" class="btn btn-primary" />
+			</div>
+		</div>
+	}
+</article>
+
+<# ClearIndent(); #>
+
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

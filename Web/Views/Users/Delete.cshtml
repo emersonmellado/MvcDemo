@@ -1,0 +1,44 @@
+﻿@model Web.Models.Access.User
+
+@Html.Partial("_BreadCumb", "Register of User"); 
+<article class="container container-principal">
+	<div class="row">
+		<div class="container-table">
+			<div class="pull-left">
+				<h3>Deseja realmente apagar esse registro?</h3>
+			</div>
+			<div class="clearfix"></div>
+			<table class="table">
+				<tr>
+					<td>
+						@Html.DisplayNameFor(model => model.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(model => model.Name)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						@Html.DisplayNameFor(model => model.Active)
+					</td>
+					<td>
+						@Html.DisplayFor(model => model.Active)
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	@using (Html.BeginForm()) 
+	{
+		@Html.AntiForgeryToken()
+		<div class="container">
+			<div class="form-actions no-color pull-right">        
+				@Html.ActionLink( "go back", "Index", "Users", null, new { @class = "btn btn-default" })
+				|
+				<input type="submit" value="Delete" class="btn btn-primary" />
+			</div>
+		</div>
+	}
+</article>
+
+

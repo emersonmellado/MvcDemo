@@ -1,0 +1,32 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>C# MVC Demo - Fully working C# project for you :)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/favicon.ico" />
+    <!--[if lte IE 8]><script src="/Content/solid-state/js/ie/html5shiv.js"></script><![endif]-->
+    @Styles.Render("~/Content/site")
+    @Scripts.Render("~/bundles/modernizr")
+    <!--[if lte IE 9]><link rel="stylesheet" href="/Content/solid-state/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="/Content/solid-state/css/ie8.css" /><![endif]-->
+</head>
+<body>
+    <!-- Page Wrapper -->
+    <div id="page-wrapper">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script src="/Content/solid-state/js/skel.min.js"></script>
+    <script src="/Content/solid-state/js/jquery.min.js"></script>
+    <script src="/Content/solid-state/js/jquery.scrollex.min.js"></script>
+    <script src="/Content/solid-state/js/util.js"></script>
+    <!--[if lte IE 8]><script src="/Content/solid-state/js/ie/respond.min.js"></script><![endif]-->
+    <script src="/Content/solid-state/js/main.js"></script>
+
+</body>
+</html>
