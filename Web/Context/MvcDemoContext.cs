@@ -17,7 +17,7 @@ namespace Web.Context
 
     {
         public MvcDemoContext()
-            : base("Laf")
+            : base("MvcDemoConn")
         {
             Database.SetInitializer<MvcDemoContext>(null);
             Configuration.LazyLoadingEnabled = false;
