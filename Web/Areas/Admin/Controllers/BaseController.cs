@@ -104,6 +104,13 @@ namespace Web.Areas.Admin.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        public long GetLoggedUser()
+        {
+            var user = Convert.ToInt64(System.Web.HttpContext.Current.User.Identity.Name);
+
+            return user;
+        }
+
         public ProfileType LoadUserProfileLoggedIn()
         {
             var userLegal = (ClaimsPrincipal)System.Web.HttpContext.Current.User;

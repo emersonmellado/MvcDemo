@@ -321,6 +321,7 @@
     <Content Include="Areas\Admin\Views\Companies\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Companies\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Companies\Index.cshtml" />
+    <Content Include="Views\Shared\ExpiredSession.cshtml" />
     <None Include="Scripts\vendor\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\vendor\jquery-1.10.2.js" />
     <Content Include="Scripts\vendor\jquery-1.10.2.min.js" />
