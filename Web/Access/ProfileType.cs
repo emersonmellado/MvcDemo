@@ -11,10 +11,10 @@ namespace Web.Access
         Administrator = 20
     }
 
-    public class ListaPermissoes
+    public class PermissionList
     {
         public string ControllerName { get; set; }
-        public Permissions PermissaoNaTela { get; set; }
+        public Permissions Permission { get; set; }
     }
 
     [Flags]
@@ -51,7 +51,7 @@ namespace Web.Access
     //    public string Url { get; set; }
     //}
 
-    public class ModulosViewModel
+    public class ModulesViewModel
     {
         public int ModuloId { get; set; }
         public string Nome { get; set; }

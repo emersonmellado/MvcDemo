@@ -73,7 +73,7 @@ namespace Web.Areas.Admin.Controllers
             ActionName = actionDescriptor.ActionName;
             ControllerName = actionDescriptor.ControllerDescriptor.ControllerName;
 
-            var permissionsCore = (filterContext.HttpContext.Session?["permissoes"] as List<ModulosViewModel>);
+            var permissionsCore = (filterContext.HttpContext.Session?["permissions"] as List<ModulesViewModel>);
             if (permissionsCore != null)
             {
                 var funcionalidades = permissionsCore.SingleOrDefault(x => x.Functionalities.Any(m => m.Url == ControllerName));
@@ -82,11 +82,9 @@ namespace Web.Areas.Admin.Controllers
                 {
                     using (var db = new MvcDemoContext())
                     {
-                        var userId = Convert.ToInt64(System.Web.HttpContext.Current.User.Identity.Name); //= HttpContext.Current.User.SplitUserName();
+                        var userId = Convert.ToInt64(System.Web.HttpContext.Current.User.Identity.Name);
 
                         var userPerfil = this.LoadUserProfileLoggedIn();
-
-                        //var permiss = db.PermissaoFuncionalidade.FirstOrDefault(x => x.FuncionalidadeId == funcExistente.FuncionalidadeId);
                         var permiss = db.FunctionalityPermissions.FirstOrDefault(x => x.FunctionalityId == funcExistente.FunctionalityId && x.PermissionGroup.ProfileTypeId == userPerfil);
 
                         if (permiss != null)
@@ -96,7 +94,7 @@ namespace Web.Areas.Admin.Controllers
 
                             if (grupo != null)
                             {
-                                filterContext.HttpContext.Session["permissoesCore"] = permiss;
+                                filterContext.HttpContext.Session["permissionsCore"] = permiss;
                             }
                         }
                     }

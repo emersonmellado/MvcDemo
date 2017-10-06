@@ -12,16 +12,16 @@ namespace Web.Access
     {
         public Permissions[] Permissions;
         //private static string ReqStatus { get; set; }
-        public string Permissoes { get; set; }
+        public string PermissionList { get; set; }
         private static string ReqStatus { get; set; }
-        private List<ModulosViewModel> _permissionsCore;
+        private List<ModulesViewModel> _permissionsCore;
 
         public AccessControlAttribute(params object[] permissions)
         {
             if (permissions.Any(r => r.GetType().BaseType != typeof(Enum)))
                 throw new ArgumentException("permissions");
 
-            Permissoes = string.Join(",", permissions.Select(r => Enum.GetName(r.GetType(), r)));
+            PermissionList = string.Join(",", permissions.Select(r => Enum.GetName(r.GetType(), r)));
         }
 
         protected override HttpValidationStatus OnCacheAuthorization(HttpContextBase httpContext)
@@ -32,7 +32,7 @@ namespace Web.Access
             }
 
             if (httpContext.Session != null)
-                _permissionsCore = (httpContext.Session["permissoes"] as List<ModulosViewModel>);
+                _permissionsCore = (httpContext.Session["permissions"] as List<ModulesViewModel>);
 
             var isAuthorized = AuthorizeCore(httpContext);
             return (isAuthorized) ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
@@ -41,13 +41,12 @@ namespace Web.Access
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-
             var routeData = httpContext.Request.RequestContext.RouteData;
             var controller = routeData.GetRequiredString("controller");
             //var action = routeData.GetRequiredString("action");
 
             Permissions permissaoMinima;
-            Enum.TryParse(Permissoes, out permissaoMinima);
+            Enum.TryParse(PermissionList, out permissaoMinima);
 
             return true;
         }
@@ -58,14 +57,14 @@ namespace Web.Access
             {
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary(
-                        new { action = "Acesso", Controller = "Home" }));
+                        new { action = "Access", Controller = "Home" }));
             }
         }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (filterContext.HttpContext.Session != null)
-                _permissionsCore = (filterContext.HttpContext.Session["permissoes"] as List<ModulosViewModel>);
+                _permissionsCore = (filterContext.HttpContext.Session["permissions"] as List<ModulesViewModel>);
 
 
             filterContext.Controller.TempData.Keep();
